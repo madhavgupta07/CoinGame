@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body{
+            margin: 0px;
+        }
+      #root {
+        width: 100vw;
+        height: 100vh;
+        background-color: silver;
+        position: relative;
+      }
+      #coins{
+        width: 50px;
+        height: 50px;
+        position: absolute;
+      }
+      #displayScore{
+        position: relative;
+        color: sienna;
+        margin: 0px;
+      }
+      #finalScore{
+        position: relative;
+        color: sienna;
+        margin: 0px;
+      }
+      #win{
+        position: relative;
+        color: sienna;
+        margin: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <button id="btn">Click Here</button>
+      <h1 id="displayScore"></h1>
+      <h1 id="win"></h1>
+    </div>
+    <script>
+      let button = document.getElementById("btn");
+      let root = document.getElementById("root");
+      let scores = 0;
+      let score = document.getElementById("displayScore");
+      let interval =  setInterval(()=>{
+        let audio = new Audio("./coinsound.wav");
+        let coins = document.createElement("img");
+        coins.setAttribute("src", "coinimage.png")
+        coins.setAttribute("id", "coins");
+        let top = parseInt(Math.random() * window.innerHeight);
+        let left = parseInt(Math.random() * window.innerWidth);
+        coins.style.setProperty("top", `${top}px`);
+        coins.style.setProperty("left", `${left}px`);
+        let coinAvailable = true;
+        coins.onmouseover= (e) =>{
+          root.removeChild(coins);
+          coinAvailable = false;
+          scores += 10;
+          displayScore.innerHTML = `Score:- ${scores}`;
+          audio.play();
+          if(scores === 200){
+            clearInterval(interval);
+            let winMessage = document.getElementById("win");
+            root.removeChild(displayScore);
+            winMessage.innerHTML = `You won`;
+          }
+        }
+        root.appendChild(coins);
+        setTimeout(()=>{
+          if(coinAvailable)
+          {
+            root.removeChild(coins);
+          }
+        }, 2000);
+      }, 500);
+    </script>
+  </body>
+</html>
